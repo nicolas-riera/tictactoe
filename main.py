@@ -1,11 +1,12 @@
+# cli / pygame Switch
+cli_mode = False
+
 # Librairies
 from game import *
 from game_gui import *
 import pygame
 
-# CLI / Pygame Switch
-cli_mode = False
-
+# cli mode
 if cli_mode:
     if player_selection() == 1:
         # Loop for single-player mode
@@ -22,7 +23,12 @@ if cli_mode:
                 continue
             else:
                 break
+
+# Pygame mode
 else:
+
+    game_mode = None
+
     # pygame setup
     pygame.init()
     screen = pygame.display.set_mode((800, 800))
@@ -36,18 +42,20 @@ else:
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill("blue")
+        screen.fill("white")
 
         # Main program
 
-        if "placeholder" == 1:
+        if game_mode is None:
+            main_menu(screen)
+
+        elif game_mode == 1:
             # Loop for single-player mode
             while True:
                 if "placeholder":
                     continue
                 else:
                     break
-
         else:
             # Loop for two-player mode
             while True:
