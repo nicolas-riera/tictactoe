@@ -55,7 +55,10 @@ def displaygrid_cli():
                 case "O" :
                     line += " O "
                 case _:
-                    line += "   "
+                    if all(k == 0 for k in grid):
+                        line += f" {j+1} "
+                    else:
+                        line += "   "
         line += " |"
         print(line)
     print("-------------")
