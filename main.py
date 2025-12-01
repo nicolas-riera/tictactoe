@@ -300,6 +300,7 @@ def player_solo_play():
         return replay()
 
     if not(0 in grid):
+        displaygrid_cli()
         print("")
         print("Égalité !")
         return replay()
@@ -313,6 +314,7 @@ def player_solo_play():
     if 0 in grid:
         return True
     else:
+        displaygrid_cli()
         print("")
         print("Égalité !")
         return replay()
@@ -328,6 +330,7 @@ def player_duo_play():
         return replay()
 
     if not(0 in grid):
+        displaygrid_cli()
         print("")
         print("Égalité !")
         return replay()
@@ -341,6 +344,7 @@ def player_duo_play():
     if 0 in grid:
         return True
     else:
+        displaygrid_cli()
         print("")
         print("Égalité !")
         return replay()
