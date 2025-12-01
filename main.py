@@ -5,6 +5,22 @@ import time
 # Variables 
 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+win_conditions = [
+    # Horizontal
+    [0, 1, 2],  
+    [3, 4, 5],  
+    [6, 7, 8],  
+
+    # Vertical
+    [0, 3, 6],  
+    [1, 4, 7],  
+    [2, 5, 8],  
+
+    # Diagonal
+    [0, 4, 8], 
+    [2, 4, 6]  
+]
+
 # Functions
 
 # Empties the console
@@ -45,7 +61,6 @@ def displaygrid_cli():
     print("-------------")
 
 def replay():
-    displaygrid_cli()
     print("")
     match input("Vous voulez rejouer (Oui/Non) : ").lower():
         case "oui":
@@ -239,27 +254,14 @@ def ordinateur(board, signe):
         return value
     else:
         return False
-    
-win_conditions = [
-    # Horizontal
-    [0, 1, 2],  
-    [3, 4, 5],  
-    [6, 7, 8],  
-
-    # Vertical
-    [0, 3, 6],  
-    [1, 4, 7],  
-    [2, 5, 8],  
-
-    # Diagonal
-    [0, 4, 8], 
-    [2, 4, 6]  
-]
 
 def checkvictory(grid, symbol, player):
     for combo in win_conditions:
         if all(grid[i] == symbol for i in combo):
+            displaygrid_cli()
+            print("")
             print(f"{player} a gagné !")
+            time.sleep(1)
             return True
     return False
 
