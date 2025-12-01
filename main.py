@@ -31,8 +31,11 @@ else:
 
     # pygame setup
     pygame.init()
+    pygame.font.init()
     screen = pygame.display.set_mode((800, 800))
+    pygame.display.set_caption("Tic Tac Toe, par Nicolas Riera")
     clock = pygame.time.Clock()
+    my_fonts = pygame.font.SysFont('Arial', 30), pygame.font.SysFont('Arial', 50)
     running = True
 
     while running:
@@ -47,7 +50,7 @@ else:
         # Main program
 
         if game_mode is None:
-            main_menu(screen)
+            main_menu(screen, my_fonts)
 
         elif game_mode == 1:
             # Loop for single-player mode
