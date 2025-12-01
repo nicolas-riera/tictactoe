@@ -239,6 +239,29 @@ def ordinateur(board, signe):
         return value
     else:
         return False
+    
+win_conditions = [
+    # Horizontal
+    [0, 1, 2],  
+    [3, 4, 5],  
+    [6, 7, 8],  
+
+    # Vertical
+    [0, 3, 6],  
+    [1, 4, 7],  
+    [2, 5, 8],  
+
+    # Diagonal
+    [0, 4, 8], 
+    [2, 4, 6]  
+]
+
+def checkvictory(grid, symbol, player):
+    for combo in win_conditions:
+        if all(grid[i] == symbol for i in combo):
+            print(f"{player} a gagné !")
+            return True
+    return False
 
 def player_solo_play():
 
@@ -247,15 +270,25 @@ def player_solo_play():
     displaygrid_cli()
     placesymbol("player1")
 
+    if checkvictory(grid, "X", "Joueur 1"):
+        return replay()
+
     if not(0 in grid):
+        print("")
+        print("Égalité !")
         return replay()
 
     displaygrid_cli()
     placesymbol(ordinateur(grid, "O"))
 
+    if checkvictory(grid, "O", "L'ordinateur"):
+        return replay()
+
     if 0 in grid:
         return True
     else:
+        print("")
+        print("Égalité !")
         return replay()
 
 # Main program
