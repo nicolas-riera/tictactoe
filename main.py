@@ -55,6 +55,9 @@ else:
                 mouse_clicked = True
             else:
                 mouse_clicked = False
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                    game_mode = None
 
         screen.fill("white")
 
@@ -64,7 +67,7 @@ else:
             game_mode = main_menu(screen, my_fonts, mouse_clicked)
 
         elif game_mode == 1: 
-            player_solo_play_gui(screen)
+            player_solo_play_gui(screen, mouse_clicked)
                 
         elif game_mode == 2:
             "placeholder 2 players"

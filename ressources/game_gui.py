@@ -22,27 +22,58 @@ def main_menu(screen, my_fonts, mouse_clicked):
     if mouse_clicked :
         if 295 <= pygame.mouse.get_pos()[0] <= 497:
             if 449 <= pygame.mouse.get_pos()[1] <= 529:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 return 1
             elif 560 <= pygame.mouse.get_pos()[1] <= 639:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 return 2
+            
+    if 295 <= pygame.mouse.get_pos()[0] <= 497:
+            if 449 <= pygame.mouse.get_pos()[1] <= 529:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            elif 560 <= pygame.mouse.get_pos()[1] <= 639:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     pygame.display.flip()
 
     return None
 
-def displaygrid_gui(screen):
+def displaygrid_gui(screen, mouse_clicked):
 
-    global grid
+    index_display_positions = [
+        (50, 53), (290, 53), (520, 53),
+        (50, 288), (290, 288), (520, 288),
+        (50, 518), (290, 518), (520, 518)
+    ]
 
     screen.fill("white")
+
+    X_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "X.png"))
+    X_symbol_scaled = pygame.transform.scale(X_symbol, (X_symbol.get_size()[0]*0.7, X_symbol.get_size()[1]*0.7))
+    O_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "O.png"))
+    O_symbol_scaled = pygame.transform.scale(O_symbol, (O_symbol.get_size()[0]*0.7, O_symbol.get_size()[1]*0.7))
 
     pygame.draw.rect(screen, (0, 0, 0), (280, 50, 10, 700))
     pygame.draw.rect(screen, (0, 0, 0), (510, 50, 10, 700))
     pygame.draw.rect(screen, (0, 0, 0), (50, 280, 700, 10))
     pygame.draw.rect(screen, (0, 0, 0), (50, 510, 700, 10))
 
+    for i in range(len(grid)):
+        if grid[i] == "X":
+            X_symbol_rect = X_symbol.get_rect(topleft=index_display_positions[i])    
+            screen.blit(X_symbol_scaled, X_symbol_rect) 
+        elif grid[i] == "O":
+            O_symbol_rect = O_symbol.get_rect(topleft=index_display_positions[i])    
+            screen.blit(O_symbol_scaled, O_symbol_rect)      
+
     pygame.display.flip()
 
-def player_solo_play_gui(screen):
+def player_solo_play_gui(screen, mouse_clicked):
 
-    displaygrid_gui(screen)
+    displaygrid_gui(screen, mouse_clicked)
+
+    
