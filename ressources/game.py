@@ -118,7 +118,7 @@ def ordinateur(board, signe, cli_mode):
     if cli_mode:
         print("")
         print("L'ordinateur réfléchi...")
-    time.sleep(2)
+        time.sleep(2)
     value = random.randint(0, 8)
     while board[value] != 0:
         value = random.randint(0, 8)

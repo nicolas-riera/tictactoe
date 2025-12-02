@@ -105,85 +105,33 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
         ((50, 518), (280, 748)), ((290, 518), (510, 748)), ((520, 518), (747, 748))
     ]
 
-    match pygame.mouse.get_pos():
-        case (x, y) if index_display_hitboxes[0][0][0] <= x <= index_display_hitboxes[0][1][0] and index_display_hitboxes[0][0][1] <= y <= index_display_hitboxes[0][1][1]:
-            if mouse_clicked and grid[0] == 0:
+    for i in range(len(grid)):
+        match pygame.mouse.get_pos():
+            case (x, y) if index_display_hitboxes[i][0][0] <= x <= index_display_hitboxes[i][1][0] and index_display_hitboxes[i][0][1] <= y <= index_display_hitboxes[i][1][1]:
+                if mouse_clicked and grid[i] == 0:
+                   pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                   grid[i] = symbol
+                   player1_has_played = True
+                   bot_has_played = False
+                elif grid[i] == 0:
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        
+            case _:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[0] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[0] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[1][0][0] <= x <= index_display_hitboxes[1][1][0] and index_display_hitboxes[1][0][1] <= y <= index_display_hitboxes[1][1][1]:
-            if mouse_clicked and grid[1] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[1] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[1] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[2][0][0] <= x <= index_display_hitboxes[2][1][0] and index_display_hitboxes[2][0][1] <= y <= index_display_hitboxes[2][1][1]:
-            if mouse_clicked and grid[2] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[2] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[2] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[3][0][0] <= x <= index_display_hitboxes[3][1][0] and index_display_hitboxes[3][0][1] <= y <= index_display_hitboxes[3][1][1]:
-            if mouse_clicked and grid[3] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[3] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[3] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[4][0][0] <= x <= index_display_hitboxes[4][1][0] and index_display_hitboxes[4][0][1] <= y <= index_display_hitboxes[4][1][1]:
-            if mouse_clicked and grid[4] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[4] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[4] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[5][0][0] <= x <= index_display_hitboxes[5][1][0] and index_display_hitboxes[5][0][1] <= y <= index_display_hitboxes[5][1][1]:
-            if mouse_clicked and grid[5] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[5] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[5] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[6][0][0] <= x <= index_display_hitboxes[6][1][0] and index_display_hitboxes[6][0][1] <= y <= index_display_hitboxes[6][1][1]:
-            if mouse_clicked and grid[6] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[6] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[6] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[7][0][0] <= x <= index_display_hitboxes[7][1][0] and index_display_hitboxes[7][0][1] <= y <= index_display_hitboxes[7][1][1]:
-            if mouse_clicked and grid[7] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[7] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[7] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case (x, y) if index_display_hitboxes[8][0][0] <= x <= index_display_hitboxes[8][1][0] and index_display_hitboxes[8][0][1] <= y <= index_display_hitboxes[8][1][1]:
-            if mouse_clicked and grid[8] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                grid[8] = symbol
-                player1_has_played = True
-                bot_has_played = False
-            elif grid[8] == 0:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        case _:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
     
     pygame.display.flip()
     
     return checkvictory(grid, "X", None, False)
+
+def placesymbol_bot_gui():
+
+    global player1_has_played
+    global bot_has_played
+
+    grid[ordinateur(grid, "O", False)] = "O"
+    player1_has_played = False
+    bot_has_played = True
+
 
 def player_solo_play_gui(screen, mouse_clicked, my_fonts):
 
@@ -191,6 +139,9 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
 
     if not(player1_has_played):
         player1_won = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
+
+    if not(bot_has_played):
+        bot_won = placesymbol_bot_gui()
     
     
 
