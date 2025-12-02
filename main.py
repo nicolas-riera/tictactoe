@@ -66,7 +66,7 @@ else:
         if game_mode is None:
             game_mode = main_menu(screen, my_fonts, mouse_clicked)
 
-        elif game_mode == 1: 
+        elif game_mode == 1:
             player_solo_play_gui(screen, mouse_clicked)
                 
         elif game_mode == 2:

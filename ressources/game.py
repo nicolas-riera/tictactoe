@@ -111,10 +111,10 @@ def placesymbol(value):
         grid[int(value)] = "O"
 
 # Algorithm for the bot to choose a cell
-def ordinateur(board, signe):
-
-    print("")
-    print("L'ordinateur réfléchi...")
+def ordinateur(board, signe, cli_mode):
+    if cli_mode:
+        print("")
+        print("L'ordinateur réfléchi...")
     time.sleep(2)
     value = random.randint(0, 8)
     while board[value] != 0:
@@ -152,7 +152,7 @@ def player_solo_play():
         return replay()
 
     displaygrid_cli()
-    placesymbol(ordinateur(grid, "O"))
+    placesymbol(ordinateur(grid, "O", cli_mode=True))
 
     if checkvictory(grid, "O", "L'ordinateur"):
         return replay()
