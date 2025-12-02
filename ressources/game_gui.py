@@ -168,8 +168,14 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
             bot_won = placesymbol_bot_gui(screen, my_fonts)
 
     elif (not 0 in grid) and not(player1_won):
+        time.sleep(1)
         return False, False, True
 
+    if player1_won or bot_won:
+        screen.fill("white")
+        displaygrid_gui(screen)
+        pygame.display.flip()
+        time.sleep(0.5)
     return player1_won, bot_won, draw
 
 def end_screen(screen, winner, my_fonts, mouse_clicked):
@@ -217,7 +223,7 @@ def end_screen(screen, winner, my_fonts, mouse_clicked):
                 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
                 displaygrid_gui(screen)
                 pygame.display.flip() 
-                time.sleep(1)
+                time.sleep(0.5)
                 return "replay1j"
             elif mouse_clicked and (winner == "player12" or winner == "player2" or winner == "draw2"):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -230,7 +236,7 @@ def end_screen(screen, winner, my_fonts, mouse_clicked):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 screen.fill("white")
                 main_menu(screen, my_fonts, False)
-                time.sleep(1)
+                time.sleep(0.5)
                 return "menu"
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
