@@ -154,6 +154,7 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
 
     player1_won = False
     bot_won = False
+    draw = False
 
     displaygrid_gui(screen)
 
@@ -166,10 +167,13 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
         if not(bot_has_played):
             bot_won = placesymbol_bot_gui(screen, my_fonts)
 
-    # faire handling victoire
+    elif (not 0 in grid):
+        return False, False, True
 
-    else:
-        pass # faire handling replay
+    return player1_won, bot_won, draw
 
-    return player1_won, bot_won
+def end_screen(screen, winner):
     
+    displaygrid_gui(screen)
+    screen.set_alpha(160)
+    pygame.display.flip()

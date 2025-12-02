@@ -36,6 +36,7 @@ else:
     player1_won = False
     bot_won = False
     winner = ""
+    draw = ""
 
     # pygame setup
     pygame.init()
@@ -61,6 +62,10 @@ else:
             if event.type == pygame.KEYDOWN:
                 if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                     game_mode = None
+                    player1_won = False
+                    bot_won = False
+                    winner = ""
+                    draw = ""
                     reset_game()
 
         screen.fill("white")
@@ -72,7 +77,7 @@ else:
 
         elif game_mode == 1:
             if pygame.time.get_ticks() - time_count_when_started >= 500:
-                player1_won, bot_won = player_solo_play_gui(screen, mouse_clicked, my_fonts)
+                player1_won, bot_won, draw = player_solo_play_gui(screen, mouse_clicked, my_fonts)
             else:
                 displaygrid_gui(screen)
                 
@@ -80,7 +85,7 @@ else:
             "placeholder 2 players"
 
         elif game_mode == 3:
-            "end screen"
+            end_screen(screen, winner)
 
         if player1_won:
             game_mode = 3
@@ -88,6 +93,9 @@ else:
         elif bot_won:
             game_mode = 3
             winner = "bot"
+        elif draw:
+            game_mode = 3
+            winner = "draw"
 
         pygame.display.flip()
 
