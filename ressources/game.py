@@ -45,10 +45,9 @@ def player_selection():
 # Displays the grid in a formated way
 def displaygrid_cli():
     clear()
-    global grid
     print("-------------")
     for i in range(0, len(grid), 3):
-        line = "| "
+        line = "|"
         for j in range(i, i+3):
             match grid[j]:
                 case "X":
@@ -60,16 +59,16 @@ def displaygrid_cli():
                         line += f" {j+1} "
                     else:
                         line += "   "
-        line += " |"
+            line += "|"
         print(line)
-    print("-------------")
+        print("-------------")
 
 # Lets you start a new game or stop the program
 def replay():
     print("")
     match input("Vous voulez rejouer (Oui/Non) : ").lower():
         case "oui":
-            global grid
+            global grid # necessary to reset the list
             grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
             return True
         case "non":
@@ -80,182 +79,20 @@ def replay():
 # Function that manages the placement of the symbols
 def placesymbol(value):
 
-    global grid
-
-    # Player 1 block
+    # Symbol assignation
     if value == "player1":
+        symbol = "X"
+    elif value == "player2":
+        symbol = "O"
+
+    # Players block
+    if value == "player1" or value == "player2":
         print("")
         place = input("Joueur 1, où voulez-vous placer votre symbole (1-9) : ")
         match place:
-            case "1":
+            case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "2":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "3":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "4":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-
-            case "5":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "6":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "7":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "8":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "9":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case _:
-                print("")
-                print("Saisie incorrecte")
-                time.sleep(3)
-                displaygrid_cli()
-                placesymbol(value)
-
-    # Player 2 block
-    elif value == "player2":
-        print("")
-        place = input("Joueur 2, où voulez-vous placer votre symbole (1-9) : ")
-        match place:
-            case "1":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "2":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "3":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "4":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "5":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "6":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "7":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "8":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
-                else:
-                    print("")
-                    print("Case déjà remplie")
-                    time.sleep(3)
-                    displaygrid_cli()
-                    placesymbol(value)
-            case "9":
-                if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "O"
+                    grid[int(place)-1] = symbol
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -302,8 +139,6 @@ def checkvictory(grid, symbol, player):
 # Function that manages the other functions when playing in single-player mode
 def player_solo_play():
 
-    global grid
-
     displaygrid_cli()
     placesymbol("player1")
 
@@ -332,8 +167,6 @@ def player_solo_play():
 
 # Function that manages the other functions when playing in two-player mode
 def player_duo_play():
-
-    global grid
 
     displaygrid_cli()
     placesymbol("player1")
