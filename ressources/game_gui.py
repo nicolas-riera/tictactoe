@@ -167,7 +167,7 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
         if not(bot_has_played):
             bot_won = placesymbol_bot_gui(screen, my_fonts)
 
-    elif (not 0 in grid):
+    elif (not 0 in grid) and not(player1_won):
         return False, False, True
 
     return player1_won, bot_won, draw # A CHANGER
