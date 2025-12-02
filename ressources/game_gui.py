@@ -144,8 +144,6 @@ def placesymbol_player_gui(value, mouse_clicked):
         case _:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-    
-
 def player_solo_play_gui(screen, mouse_clicked):
 
     displaygrid_gui(screen, mouse_clicked)
