@@ -30,7 +30,9 @@ if cli_mode:
 # Pygame mode
 else:
 
+    # Variables
     game_mode = None
+    mouse_clicked = False
 
     # pygame setup
     pygame.init()
@@ -49,16 +51,21 @@ else:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_clicked = True
+            else:
+                mouse_clicked = False
 
         screen.fill("white")
 
         # Main program
 
         if game_mode is None:
-            main_menu(screen, my_fonts)
+            game_mode = main_menu(screen, my_fonts, mouse_clicked)
 
         elif game_mode == 1:
             # Loop for single-player mode
+            print("11")
             while True:
                 if "placeholder":
                     continue
@@ -66,6 +73,7 @@ else:
                     break
         else:
             # Loop for two-player mode
+            print("22")
             while True:
                 if "placeholder":
                     continue
