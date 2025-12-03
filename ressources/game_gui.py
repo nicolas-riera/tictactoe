@@ -78,8 +78,8 @@ def ai_difficulty_popup(screen, my_fonts, mouse_clicked, ai_difficulty):
     screen.blit(ai_easy_mode_button, (180, 470))
     ai_normal_mode_button = my_fonts[0].render("Normal", True, (0, 0, 0))
     screen.blit(ai_normal_mode_button, (361, 470))
-    ai_hard_mode_button = my_fonts[0].render("Coming Soon", True, (0, 0, 0))
-    screen.blit(ai_hard_mode_button, (515, 470))
+    ai_hard_mode_button = my_fonts[0].render("Difficile", True, (0, 0, 0))
+    screen.blit(ai_hard_mode_button, (550, 470))
 
     if ai_difficulty is None :
         pygame.display.flip()

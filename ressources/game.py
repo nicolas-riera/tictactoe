@@ -114,6 +114,8 @@ def placesymbol(value):
         grid[int(value)] = "O"
 
 # Algorithm for the bot to choose a cell
+
+# Level 2
 def bot_check_two_in_line(board, signe):
     for ligne in win_conditions:
             cases = [board[i] for i in ligne]
@@ -121,17 +123,61 @@ def bot_check_two_in_line(board, signe):
                 return ligne[cases.index(0)]
     return None
 
+# Level 3
+def minimax(board, is_maximizing):
+    if checkvictory(board, "O", "bot", False)[0]:
+        return 1
+    elif checkvictory(board, "X", "player1", False)[0]:
+        return -1
+    elif 0 not in board:
+        return 0
+    
+    if is_maximizing:
+        best_score = -float('inf')
+        for i in range(9):
+            if board[i] == 0:
+                board[i] = "O"
+                score = minimax(board, False)
+                board[i] = 0
+                best_score = max(score, best_score)
+        return best_score
+    else:
+        best_score = float('inf')
+        for i in range(9):
+            if board[i] == 0:
+                board[i] = "X"
+                score = minimax(board, True)
+                board[i] = 0
+                best_score = min(score, best_score)
+        return best_score
+    
+def best_move(board):
+    best_score = -float('inf')
+    value = None
+    for i in range(9):
+        if board[i] == 0:
+            board[i] = "O"
+            score = minimax(board, False)
+            board[i] = 0
+            if score > best_score:
+                best_score = score
+                value = i
+    return value
+
+# Base function
 def ordinateur(board, signe, cli_mode, ai_difficulty):
     if cli_mode:
         print("")
         print("L'ordinateur réfléchi...")
         time.sleep(2)
-    
+
+    # Level 1
     if ai_difficulty == 1:
         value = random.randint(0, 8)
         while board[value] != 0:
             value = random.randint(0, 8)
 
+    # Level 2
     elif ai_difficulty == 2:
         # win if possible
         value = bot_check_two_in_line(board, signe)
@@ -141,9 +187,11 @@ def ordinateur(board, signe, cli_mode, ai_difficulty):
         if value is None:
             value = random.randint(0, 8)
             while board[value] != 0:
-                value = random.randint(0, 8)           
+                value = random.randint(0, 8)     
+
+    # Level 3                      
     else:
-        "placeholder minmax"
+        value = best_move(board)
 
     if 0 <= value <= 8:
         return value
