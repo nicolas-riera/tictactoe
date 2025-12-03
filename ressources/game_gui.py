@@ -16,25 +16,32 @@ X_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "X.png"))
 O_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "O.png"))
 logo_title = pygame.image.load(os.path.join(BASE_DIR, "images", "logo_title.png"))
 
-def winner_trigger(player1_won, bot_won, draw, game_mode, winner):
+def winner_trigger(player1_won, player2_won, bot_won, draw, game_mode, winner):
     if player1_won:
         if game_mode == 1:
             return 3, "player11"
         elif game_mode == 2:
             return 3, "player12"
+    elif player2_won:
+        return 3, "player2"
     elif bot_won:
         return 3, "bot"
     elif draw:
-        return 3, "draw1"
+        if game_mode == 1:
+            return 3, "draw1"
+        elif game_mode == 2:
+            return 3, "draw2"
     return game_mode, winner
 
 def reset_game():
     global grid
     global player1_has_played
+    global player2_has_played
     global bot_has_played
 
     grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
     player1_has_played = False
+    player2_has_played = True
     bot_has_played = True
 
 def action_trigger(action):
@@ -114,6 +121,7 @@ def displaygrid_gui(screen):
 def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
 
     global player1_has_played
+    global player2_has_played
     global bot_has_played
 
     # Symbol assignation
@@ -142,7 +150,12 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
             if mouse_clicked and grid[i] == 0:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 grid[i] = symbol
-                player1_has_played = True
+                if symbol == "X":
+                    player1_has_played = True
+                    player2_has_played = False
+                elif symbol == "O":
+                    player1_has_played = False
+                    player2_has_played = True
                 bot_has_played = False
             elif grid[i] == 0:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -154,7 +167,7 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
 
     pygame.display.flip()  
     
-    return checkvictory(grid, "X", None, False)
+    return checkvictory(grid, symbol, None, False)
 
 def placesymbol_bot_gui(screen, my_fonts):
 
@@ -204,7 +217,36 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
         time.sleep(0.5)
     return player1_won, bot_won, draw
 
+def player_duo_play_gui(screen, mouse_clicked, my_fonts):
+
+    player1_won = False
+    player2_won = False
+    draw = False
+
+    displaygrid_gui(screen)
+
+    if not(player1_has_played):
+        player1_won = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
+
+    displaygrid_gui(screen)
+
+    if 0 in grid and not(player1_won):
+        if not(player2_has_played):
+            player2_won = placesymbol_player_gui("player2", screen, mouse_clicked, my_fonts)
+
+    elif (not 0 in grid) and not(player1_won or player2_won):
+        draw = True
+
+    if player1_won or player2_won or draw:
+        screen.fill("white")
+        displaygrid_gui(screen)
+        pygame.display.flip()
+        time.sleep(0.5)
+    return player1_won, player2_won, draw
+
 def end_screen(screen, winner, my_fonts, mouse_clicked):
+
+    global grid
     
     displaygrid_gui(screen)
     end_screen_fade = pygame.Surface((800, 800))
@@ -245,7 +287,6 @@ def end_screen(screen, winner, my_fonts, mouse_clicked):
             if mouse_clicked and (winner == "player11" or winner == "bot" or winner == "draw1"):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 screen.fill("white")
-                global grid
                 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
                 displaygrid_gui(screen)
                 pygame.display.flip() 
@@ -253,6 +294,11 @@ def end_screen(screen, winner, my_fonts, mouse_clicked):
                 return "replay1j"
             elif mouse_clicked and (winner == "player12" or winner == "player2" or winner == "draw2"):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                screen.fill("white")
+                grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
+                displaygrid_gui(screen)
+                pygame.display.flip() 
+                time.sleep(0.5)
                 return "replay2j"
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)

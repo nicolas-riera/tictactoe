@@ -86,12 +86,15 @@ else:
                 displaygrid_gui(screen)
                 
         elif game_mode == 2:
-            "placeholder 2 players"
+            if pygame.time.get_ticks() - time_count_when_started >= 500:
+                player1_won, player2_won, draw = player_duo_play_gui(screen, mouse_clicked, my_fonts)
+            else:
+                displaygrid_gui(screen)
 
         elif game_mode == 3:
             action = end_screen(screen, winner, my_fonts, mouse_clicked)
 
-        game_mode, winner = winner_trigger(player1_won, bot_won, draw, game_mode, winner)
+        game_mode, winner = winner_trigger(player1_won, player2_won, bot_won, draw, game_mode, winner)
 
         pygame.display.flip()
 
