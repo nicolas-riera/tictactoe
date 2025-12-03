@@ -137,8 +137,13 @@ def checkvictory(grid, symbol, player, cli_mode):
                 print("")
                 print(f"{player} a gagné !")
                 time.sleep(1)
-            return True
-    return False
+                return True
+            else:
+                return True, combo
+    if cli_mode:
+        return False
+    else:
+        return False, []
 
 # Function that manages the other functions when playing in single-player mode
 def player_solo_play():

@@ -38,6 +38,7 @@ else:
     bot_won = False
     winner = ""
     draw = ""
+    win_combo = []
     action = None
 
     # pygame setup
@@ -81,18 +82,18 @@ else:
 
         elif game_mode == 1:
             if pygame.time.get_ticks() - time_count_when_started >= 500:
-                player1_won, bot_won, draw = player_solo_play_gui(screen, mouse_clicked, my_fonts)
+                player1_won, bot_won, draw, win_combo = player_solo_play_gui(screen, mouse_clicked, my_fonts)
             else:
                 displaygrid_gui(screen)
                 
         elif game_mode == 2:
             if pygame.time.get_ticks() - time_count_when_started >= 500:
-                player1_won, player2_won, draw = player_duo_play_gui(screen, mouse_clicked, my_fonts)
+                player1_won, player2_won, draw, win_combo = player_duo_play_gui(screen, mouse_clicked, my_fonts)
             else:
                 displaygrid_gui(screen)
 
         elif game_mode == 3:
-            action = end_screen(screen, winner, my_fonts, mouse_clicked)
+            action = end_screen(screen, winner, my_fonts, mouse_clicked, win_combo)
 
         game_mode, winner = winner_trigger(player1_won, player2_won, bot_won, draw, game_mode, winner)
 

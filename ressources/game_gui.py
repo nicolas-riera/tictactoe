@@ -118,6 +118,26 @@ def displaygrid_gui(screen):
             O_symbol_rect = O_symbol.get_rect(topleft=index_display_positions[i])    
             screen.blit(O_symbol_scaled, O_symbol_rect)
 
+def display_win_line(screen, win_combo):
+
+    lines_coordinates = [
+        ((25, 157), (770, 157)),
+        ((25, 395), (770, 395)),
+        ((25, 625), (770, 625)),
+
+        ((159, 25), (159, 775)),
+        ((400, 25), (400, 775)),
+        ((630, 25), (630, 775)),
+
+        ((43, 43), (740, 740)),
+        ((43, 740), (740, 43))
+        
+    ]
+
+    for i in range(len(win_conditions)):
+        if win_conditions[i] == win_combo:
+            pygame.draw.line(screen, "black", lines_coordinates[i][0], lines_coordinates[i][1], 6)
+
 def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
 
     global player1_has_played
@@ -134,7 +154,7 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
         player1_turn = my_fonts[0].render("Joueur 2, à ton tour !", True, (0, 0, 0))
         screen.blit(player1_turn, (282, 755)) 
 
-    # Hitboxes coordonnees
+    # Hitboxes coordinates
     index_display_hitboxes = [
         ((50, 53), (278, 274)), ((289, 53), (508, 274)), ((520, 53), (747, 274)), 
         ((50, 288), (280, 508)), ((289, 288), (510, 508)), ((520, 288), (747, 508)),
@@ -195,17 +215,18 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
     player1_won = False
     bot_won = False
     draw = False
+    win_combo = []
 
     displaygrid_gui(screen)
 
     if not(player1_has_played):
-        player1_won = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
+        player1_won, win_combo = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
 
     displaygrid_gui(screen)
 
     if 0 in grid and not(player1_won):
         if not(bot_has_played):
-            bot_won = placesymbol_bot_gui(screen, my_fonts)
+            bot_won, win_combo = placesymbol_bot_gui(screen, my_fonts)
 
     elif (not 0 in grid) and not(player1_won):
         draw = True
@@ -213,26 +234,28 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
     if player1_won or bot_won or draw:
         screen.fill("white")
         displaygrid_gui(screen)
+        display_win_line(screen, win_combo)
         pygame.display.flip()
         time.sleep(0.5)
-    return player1_won, bot_won, draw
+    return player1_won, bot_won, draw, win_combo
 
 def player_duo_play_gui(screen, mouse_clicked, my_fonts):
 
     player1_won = False
     player2_won = False
     draw = False
+    win_combo = []
 
     displaygrid_gui(screen)
 
     if not(player1_has_played):
-        player1_won = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
+        player1_won, win_combo = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
 
     displaygrid_gui(screen)
 
     if 0 in grid and not(player1_won):
         if not(player2_has_played):
-            player2_won = placesymbol_player_gui("player2", screen, mouse_clicked, my_fonts)
+            player2_won, win_combo = placesymbol_player_gui("player2", screen, mouse_clicked, my_fonts)
 
     elif (not 0 in grid) and not(player1_won or player2_won):
         draw = True
@@ -240,15 +263,17 @@ def player_duo_play_gui(screen, mouse_clicked, my_fonts):
     if player1_won or player2_won or draw:
         screen.fill("white")
         displaygrid_gui(screen)
+        display_win_line(screen, win_combo)
         pygame.display.flip()
         time.sleep(0.5)
-    return player1_won, player2_won, draw
+    return player1_won, player2_won, draw, win_combo
 
-def end_screen(screen, winner, my_fonts, mouse_clicked):
+def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo):
 
     global grid
     
     displaygrid_gui(screen)
+    display_win_line(screen, win_combo)
     end_screen_fade = pygame.Surface((800, 800))
     end_screen_fade.fill((0, 0, 0))
     end_screen_fade.set_alpha(160)
