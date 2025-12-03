@@ -114,6 +114,13 @@ def placesymbol(value):
         grid[int(value)] = "O"
 
 # Algorithm for the bot to choose a cell
+def bot_check_two_in_line(board, signe):
+    for ligne in win_conditions:
+            cases = [board[i] for i in ligne]
+            if cases.count(signe) == 2 and cases.count(0) == 1:
+                return ligne[cases.index(0)]
+    return None
+
 def ordinateur(board, signe, cli_mode, ai_difficulty):
     if cli_mode:
         print("")
@@ -126,7 +133,15 @@ def ordinateur(board, signe, cli_mode, ai_difficulty):
             value = random.randint(0, 8)
 
     elif ai_difficulty == 2:
-        'placeholder if'
+        # win if possible
+        value = bot_check_two_in_line(board, signe)
+        if value is None:
+            # block player
+            value = bot_check_two_in_line(board, "X")
+        if value is None:
+            value = random.randint(0, 8)
+            while board[value] != 0:
+                value = random.randint(0, 8)           
     else:
         "placeholder minmax"
 
