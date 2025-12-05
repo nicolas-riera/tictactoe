@@ -11,10 +11,25 @@ player1_has_played = False
 player2_has_played = True
 bot_has_played = True
 
-# Image loading
+# Asset loading
+pygame.mixer.init()
+
 X_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "X.png"))
+X_symbol_sound = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "X_symbol_place.mp3"))
+
 O_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "O.png"))
+O_symbol_sound = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "O_symbol_place.mp3"))
+
 logo_title = pygame.image.load(os.path.join(BASE_DIR, "images", "logo_title.png"))
+
+menu_button_click = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "menu_button_click.wav"))
+menu_button_start = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "menu_button_start.mp3"))
+
+win_line_sfx = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "win_line_sfx.mp3"))
+
+win1_sfx = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "win1_sfx.wav"))
+win2_sfx = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "win2_sfx.mp3"))
+lost_sfx = pygame.mixer.Sound(os.path.join(BASE_DIR, "sfx", "lost_sfx.wav"))
 
 def winner_trigger(player1_won, player2_won, bot_won, draw, game_mode, winner):
     if player1_won:
@@ -48,13 +63,13 @@ def action_trigger(action):
     match action:
         case "replay1j":
             reset_game()
-            return 1, False, False, False, "", "", None
+            return 1, False, False, False, "", "", None, False
         case "replay2j":
             reset_game()
-            return 2, False, False, False, "", "", None
+            return 2, False, False, False, "", "", None, False
         case "menu":
             reset_game()
-            return None, False, False, False, "", "", None
+            return None, False, False, False, "", "", None, False
         case _:
             pass
 
@@ -90,18 +105,21 @@ def ai_difficulty_popup(screen, my_fonts, mouse_clicked, ai_difficulty):
         if 122 <= pygame.mouse.get_pos()[0] <= 302:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_start)
                 return 1
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND) 
         elif 312 <= pygame.mouse.get_pos()[0] <= 490:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_start)
                 return 2
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND) 
         elif 501 <= pygame.mouse.get_pos()[0] <= 680:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_start)
                 return 3
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND) 
@@ -132,12 +150,14 @@ def main_menu(screen, my_fonts, mouse_clicked, ai_difficulty):
         if 449 <= pygame.mouse.get_pos()[1] <= 529:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_click)
                 return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked, ai_difficulty)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)        
         elif 560 <= pygame.mouse.get_pos()[1] <= 639:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_start)
                 return 2, pygame.time.get_ticks(), None
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -203,10 +223,12 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
     # Symbol assignation
     if value == "player1":
         symbol = "X"
+        sound_to_play = X_symbol_sound
         player1_turn = my_fonts[0].render("Joueur 1, à ton tour !", True, (0, 0, 0))
         screen.blit(player1_turn, (282, 755))
     elif value == "player2":
         symbol = "O"
+        sound_to_play = O_symbol_sound
         player1_turn = my_fonts[0].render("Joueur 2, à ton tour !", True, (0, 0, 0))
         screen.blit(player1_turn, (282, 755)) 
 
@@ -225,6 +247,7 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
         if index_display_hitboxes[i][0][0] <= x <= index_display_hitboxes[i][1][0] and index_display_hitboxes[i][0][1] <= y <= index_display_hitboxes[i][1][1]:
             if mouse_clicked and grid[i] == 0:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(sound_to_play)
                 grid[i] = symbol
                 if symbol == "X":
                     player1_has_played = True
@@ -261,6 +284,7 @@ def placesymbol_bot_gui(screen, my_fonts, ai_difficulty):
     time.sleep(2)
 
     grid[ordinateur(grid, "O", False, ai_difficulty)] = "O"
+    pygame.mixer.Sound.play(O_symbol_sound)
     player1_has_played = False
     bot_has_played = True
 
@@ -288,6 +312,8 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts, ai_difficulty):
         draw = True
 
     if player1_won or bot_won or draw:
+        if not(draw):
+            pygame.mixer.Sound.play(win_line_sfx)
         screen.fill("white")
         displaygrid_gui(screen)
         display_win_line(screen, win_combo)
@@ -317,6 +343,8 @@ def player_duo_play_gui(screen, mouse_clicked, my_fonts):
         draw = True
 
     if player1_won or player2_won or draw:
+        if not(draw):
+            pygame.mixer.Sound.play(win_line_sfx)
         screen.fill("white")
         displaygrid_gui(screen)
         display_win_line(screen, win_combo)
@@ -324,7 +352,7 @@ def player_duo_play_gui(screen, mouse_clicked, my_fonts):
         time.sleep(0.5)
     return player1_won, player2_won, draw, win_combo
 
-def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo):
+def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo, sfx_played):
 
     global grid
     
@@ -342,16 +370,28 @@ def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo):
     match winner:
         case "player11" | "player12":
             winner_text = "Joueur 1"
+            if not(sfx_played):
+                sfx_played = True
+                pygame.mixer.Sound.play(win1_sfx)
         case "player2":
             winner_text = "Joueur 2"
+            if not(sfx_played):
+                sfx_played = True
+                pygame.mixer.Sound.play(win2_sfx)
         case "bot":
             winner_text = "L'ordinateur"
+            if not(sfx_played):
+                sfx_played = True
+                pygame.mixer.Sound.play(lost_sfx)
         case _:
             winner_text = "Dinnerbone"
 
     if winner == "draw1" or winner == "draw2":
         winner_text_display = my_fonts[1].render("Égalité !", True, (0, 0, 0))
         screen.blit(winner_text_display, (328, 315))
+        if not(sfx_played):
+                sfx_played = True
+                pygame.mixer.Sound.play(lost_sfx)
     else:
         winner_text_display = my_fonts[1].render(f"{winner_text} a gagné !", True, (0, 0, 0))
         screen.blit(winner_text_display, (230, 315))
@@ -367,30 +407,33 @@ def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo):
         if 161 <= pygame.mouse.get_pos()[0] <= 363:
             if mouse_clicked and (winner == "player11" or winner == "bot" or winner == "draw1"):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_start)
                 screen.fill("white")
                 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
                 displaygrid_gui(screen)
                 pygame.display.flip() 
                 time.sleep(0.5)
-                return "replay1j"
+                return "replay1j", sfx_played
             elif mouse_clicked and (winner == "player12" or winner == "player2" or winner == "draw2"):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_start)
                 screen.fill("white")
                 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
                 displaygrid_gui(screen)
                 pygame.display.flip() 
                 time.sleep(0.5)
-                return "replay2j"
+                return "replay2j", sfx_played
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
 
         elif 429 <= pygame.mouse.get_pos()[0] <= 633:
             if mouse_clicked :
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pygame.mixer.Sound.play(menu_button_click)
                 screen.fill("white")
                 main_menu(screen, my_fonts, False, None)
                 time.sleep(0.5)
-                return "menu"
+                return "menu", sfx_played
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
@@ -398,4 +441,4 @@ def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo):
     else:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-    return None
+    return None, sfx_played

@@ -41,6 +41,7 @@ else:
     draw = ""
     win_combo = []
     action = None
+    end_screen_sfx_played = False
 
     # pygame setup
     pygame.init()
@@ -76,7 +77,7 @@ else:
 
         # End screen menu action
         if action != None:
-            game_mode, player1_won, player2_won, bot_won, winner, draw, action = action_trigger(action)        
+            game_mode, player1_won, player2_won, bot_won, winner, draw, action, end_screen_sfx_played = action_trigger(action)        
 
         if game_mode is None or ai_difficulty == "wait":
             game_mode, time_count_when_started, ai_difficulty = main_menu(screen, my_fonts, mouse_clicked, ai_difficulty)
@@ -94,7 +95,7 @@ else:
                 displaygrid_gui(screen)
 
         elif game_mode == 3:
-            action = end_screen(screen, winner, my_fonts, mouse_clicked, win_combo)
+            action, end_screen_sfx_played = end_screen(screen, winner, my_fonts, mouse_clicked, win_combo, end_screen_sfx_played)
 
         game_mode, winner = winner_trigger(player1_won, player2_won, bot_won, draw, game_mode, winner)
 
