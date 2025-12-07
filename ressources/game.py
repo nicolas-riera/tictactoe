@@ -5,6 +5,7 @@ import random
 # Variables 
 
 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+ai_difficulty = 1
 
 # All the possibles patterns to win
 win_conditions = [
@@ -41,6 +42,25 @@ def player_selection():
     print("")
 
     selection = input("")
+
+    if selection == "1":
+        while True:
+            clear()
+            print("Choissisez une difficulté :")
+            print("")
+            print("1. Facile")
+            print("2. Normale")
+            print("3. Difficile")
+            print("")
+
+            difficulty = input("")
+
+            if difficulty == "1" or difficulty == "2" or difficulty == "3":
+                global ai_difficulty
+                ai_difficulty = int(difficulty)
+                break
+        return 1
+
     if selection == "1" or selection == "2":
         return int(selection)
     else:
@@ -231,7 +251,7 @@ def player_solo_play():
         return replay()
 
     displaygrid_cli()
-    placesymbol(ordinateur(grid, "O", True, 1))
+    placesymbol(ordinateur(grid, "O", True, ai_difficulty))
 
     if checkvictory(grid, "O", "L'ordinateur", True):
         return replay()
